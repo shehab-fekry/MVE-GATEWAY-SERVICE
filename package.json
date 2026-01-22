@@ -11,7 +11,8 @@
     "precommit": "bun run lint && bun run typecheck && bun run build",
     "preinstall": "npx only-allow bun",
     "prepare": "bun run husky install",
-    "dev": "nodemon --watch . --ext ts --exec NODE_NO_WARNINGS=1 node --loader ts-node/esm ./src/app.ts",
+    "dev": "bun --watch src/app.ts",
+    "start": "node dist/app.js",
     "lint": "eslint 'src/**/*.ts' 'scripts/**/*.{js,ts}'",
     "typecheck": "tsc --noEmit",
     "build": "tsc"

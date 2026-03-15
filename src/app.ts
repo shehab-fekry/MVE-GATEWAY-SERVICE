@@ -11,10 +11,17 @@ import { IRequest } from '../global';
 // Create an Express application
 const app = express();
 
+// Whitelist of allowed origins for CORS
+const whitelist = [
+  String(process.env.AUTH_FRONTEND),
+  String(process.env.CUSTOMER_FRONTEND),
+  String(process.env.SELLER_FRONTEND),
+];
+
 // allow localhost:3000 to access resources from this server
 app.use(
   cors({
-    origin: '*',
+    origin: whitelist,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -49,7 +56,7 @@ app.get('/gateway-health', (req, res) => {
 });
 
 // Proxy requests to /auth the auth-service
-app.use('/auth', proxy('http://localhost:6001'));
+app.use('/auth', proxy(`${process.env.AUTH_SERVICE}`));
 
 // server's port
 const PORT = process.env.PORT;

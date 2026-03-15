@@ -21,7 +21,16 @@ const whitelist = [
 // allow localhost:3000 to access resources from this server
 app.use(
   cors({
-    origin: whitelist,
+    origin: (requestOrigin, callback) => {
+      if (
+        requestOrigin &&
+        whitelist.includes(requestOrigin as string)
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed access by CORS.'));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
